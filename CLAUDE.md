@@ -30,6 +30,16 @@ yarn test:coverage     # Generate coverage report
 yarn test:ui           # Interactive test UI
 yarn fix               # Auto-fix formatting and linting issues
 
+# Running single tests
+yarn test path/to/test.test.tsx    # Run specific test file
+yarn test --grep "pattern"         # Run tests matching pattern
+
+# Linting & formatting
+yarn test:code         # Run ESLint
+yarn test:other        # Run Prettier checks
+yarn fix:code          # Auto-fix ESLint issues
+yarn fix:other         # Auto-fix Prettier formatting
+
 # Build commands
 yarn build             # Build the app
 yarn build:package     # Build npm package
@@ -59,6 +69,7 @@ yarn build:preview     # Build and preview
 - **Jotai** for state management with custom wrappers
 - State modules: `editor-jotai.ts`, `app-jotai.ts`
 - Custom hooks for state access
+- **Import Restriction**: Never import from "jotai" directly, use the wrapped exports from `editor-jotai.ts`
 
 ### Testing
 
@@ -66,6 +77,14 @@ yarn build:preview     # Build and preview
 - Tests colocated with source files (`*.test.ts`, `*.test.tsx`)
 - Test utilities in `packages/excalidraw/tests/test-utils.ts`
 - Always attempt to fix test failures
+- Coverage requirements: Lines 60%, Branches 70%, Functions 63%, Statements 60%
+
+### Action System
+
+- User interactions handled through the action system in `packages/excalidraw/actions/`
+- Actions follow the `Action` interface with `name`, `perform`, and optional `keyTest`
+- Actions return `ActionResult` to modify elements, appState, or files
+- Register actions using `register()` from `actions/register.ts`
 
 ### Code Standards
 
@@ -87,3 +106,21 @@ yarn build:preview     # Build and preview
 - Multiple canvas layers for performance
 - Canvas-based rendering with WebGL support
 - Action system for user interactions (`actions/` directory)
+
+## Commit Conventions
+
+Use semantic commit prefixes:
+- `feat:` - New features
+- `fix:` - Bug fixes
+- `chore:` - Maintenance tasks
+- `docs:` - Documentation changes
+- `perf:` - Performance improvements
+- `refactor:` - Code refactoring
+- `test:` - Test additions or modifications
+
+## Import Guidelines
+
+- Packages cannot import from `@excalidraw/excalidraw` except for types
+- Use path aliases for internal package imports
+- Jotai imports must use wrapped exports from `editor-jotai.ts`
+- Follow ESLint import ordering rules
